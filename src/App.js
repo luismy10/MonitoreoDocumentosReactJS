@@ -6,6 +6,7 @@ import Menu from './components/layout/Menu';
 import Main from "./assets/js/main";
 import Dashboard from "./components/Dashboard";
 import Home from "./components/Home";
+import Usuario from "./components/usuario/Usuario";
 import NotFound from "./components/error/NotFound";
 
 class App extends Component {
@@ -27,13 +28,19 @@ class App extends Component {
             path="/"
             name="home"
             exact={true}
-            render={(props) => <Home />}
+            render={(props) => <Home {...props} />}
           />
           <Route
             path="/dashboard"
             name="dashboard"
             exact={true}
-            render={(props) => <Dashboard />}
+            render={(props) => <Dashboard {...props} />}
+          />
+          <Route
+            path="/usuario"
+            name="usuario"
+            exact={true}
+            render={(props) => <Usuario {...props} />}
           />
           <Route component={NotFound} />
         </Switch>
