@@ -606,6 +606,10 @@ small,
   font-weight: 400;
 }
 
+.rotate180{
+  transform: rotate(180deg) translateX(12px)
+}
+
 mark,
 .mark {
   padding: 0.2em;
