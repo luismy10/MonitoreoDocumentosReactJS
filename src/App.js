@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import "./assets/js/bootstrap.min.js";
+import "./assets/js/bootstrap";
 import Header from './components/layout/Header';
 import Menu from './components/layout/Menu';
-import Main from "./assets/js/main.js";
+import Main from "./assets/js/main";
 import Dashboard from "./components/Dashboard";
 import Home from "./components/Home";
 import NotFound from "./components/error/NotFound";
@@ -11,7 +11,6 @@ import NotFound from "./components/error/NotFound";
 class App extends Component {
   constructor(props) {
     super(props);
-    // window.rxdata = 10;
   }
 
   componentDidMount() {
