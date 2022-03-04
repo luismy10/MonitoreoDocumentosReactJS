@@ -5,11 +5,13 @@ class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
+        console.log("dashboard")
     }
 
     render() {
         return (
             <main className="app-content">
+                <input type="text" className="form-control" />
                 <div className="tile mb-4">
 
                     <div className="overlay" id="divOverlayIndex">

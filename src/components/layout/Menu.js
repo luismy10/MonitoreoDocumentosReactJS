@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import logo from "../../assets/images/logo.png";
 
 class Menu extends React.Component {
 
     constructor(props) {
         super(props);
+        // console.log(this.props)
     }
 
     render() {
@@ -24,10 +25,26 @@ class Menu extends React.Component {
                     </div>
                     <ul className="app-menu">
                         <li>
-                            <Link to="dashboard" className="app-menu__item">
+                            <NavLink to="dashboard" exact activeClassName="active" className="app-menu__item">
                                 <i className="app-menu__icon fa fa-dashboard"></i>
                                 <span className="app-menu__label">Dashboard</span>
-                            </Link>
+                            </NavLink>
+                        </li>
+
+                        <li className="treeview">
+                            <a className="app-menu__item" href="#" data-toggle="treeview">
+                                <i className="app-menu__icon fa fa-external-link-square rotate180"></i>
+                                <span className="app-menu__label">Plan de Estudio</span>
+                                <i className="treeview-indicator fa fa-angle-right"></i>
+                            </a>
+                            <ul className="treeview-menu">
+                                <li>
+                                    <NavLink to="plan" exact activeClassName="active" className="app-menu__item" >
+                                        <i className="app-menu__icon fa fa-circle-o"></i>
+                                        <span className="app-menu__label">Plan</span>
+                                    </NavLink>
+                                </li>
+                            </ul>
                         </li>
 
                         <li className="treeview">
@@ -44,16 +61,16 @@ class Menu extends React.Component {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="usuario" className="app-menu__item" >
+                                    <NavLink to="usuario" exact activeClassName="active" className="app-menu__item" >
                                         <i className="app-menu__icon fa fa-circle-o"></i>
                                         <span className="app-menu__label">Usuarios</span>
-                                    </Link>
+                                    </NavLink>
                                 </li>
                                 <li>
-                                    <Link to="dashboard" className="app-menu__item" href="#">
+                                    <NavLink to="perfil" exact activeClassName="active" className="app-menu__item">
                                         <i className="app-menu__icon fa fa-circle-o"></i>
                                         <span className="app-menu__label">Perfiles</span>
-                                    </Link>
+                                    </NavLink>
                                 </li>
                                 <li>
                                     <Link to="dashboard" className="app-menu__item" href="#">
