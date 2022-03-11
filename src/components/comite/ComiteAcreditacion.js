@@ -1,57 +1,37 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import $ from '../../assets/js/jquery-3.3.1.min';
-import ModalUsuario from './ModalUsuario';
-import ModalDepAcademico from './ModalDepAcademico';
-import ModalPerfilUsuario from './ModalPerfilUsuario';
+import ModalMiembros from './ModalMiembros';
+import ModalComiteAcreditacion from './ModalComiteAcreditacion'
 
-class Usuario extends React.Component {
+class ComiteAcreditacion extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            datosUsuario: "Apellidos y Nombes"
+            datosFacultadEscuela: "Facultad X - Escuela Y"
         }
     }
 
-    componentDidMount(){
-       
+    openModalMiembros = () => {
+        $("#modalMiembros").modal("show");
     }
 
-    openModalUsuario = () => {
-        $("#modalUsuario").modal("show");
+    openModalComiteAcreditacion = () => {
+        $("#modalComiteAcreditacion").modal("show");
     }
 
-    openModalDepAcademico = () => {
-        $("#modalDepAcademico").modal("show");
-    }
-
-    openModalPerfilUsuario = () => {
-        $("#modalPerfilUsuario").modal("show");
-    }
-
-    onEventCloseModal = () => {
-        
-        $("#modalUsuario").on("hide.bs.modal", function() {
-            
-        });
-        
-    }
-
-  
     render() {
         return (
             <>
-
-                <ModalUsuario title={"Registrar Usuario"} />
-                <ModalDepAcademico title={"Departamento Academico  - "+this.state.datosUsuario } />
-                <ModalPerfilUsuario title={"Perfiles - "+this.state.datosUsuario }/>
+                <ModalMiembros title={"Integrantes: "+this.state.datosFacultadEscuela}/>
+                <ModalComiteAcreditacion title={"Registrar comité de acreditación"}/>
 
                 <main className="app-content">
 
                     <div className="app-title">
-                        <h1><i className="fa fa-folder"></i> Usuarios <small>Lista</small></h1>
+                        <h1><i className="fa fa-folder"></i> Comite de Acreditacion <small>Lista</small></h1>
                     </div>
 
                     <div className="tile">
@@ -59,7 +39,7 @@ class Usuario extends React.Component {
                         <div className="row">
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div className="form-group">
-                                    <button className="btn btn-primary" id="btnAgregar" title="Agregar" onClick={this.openModalUsuario}>
+                                    <button className="btn btn-primary" id="btnAgregar" title="Agregar" onClick={this.openModalComiteAcreditacion}>
                                         <i className="fa fa-plus"></i> Agregar
                                     </button>
                                     <button className="btn btn-secondary ml-1" id="btnReload" title="Recargar">
@@ -74,7 +54,7 @@ class Usuario extends React.Component {
                                 <div className="form-group d-flex">
                                     <label className="pt-1 pr-1">Buscar: </label>
                                     <div className="input-group">
-                                        <input type="search" className="form-control" placeholder="Escribir para filtrar por apellidos o nombres" id="txtSearch" />
+                                        <input type="search" className="form-control" placeholder="Escribir para filtrar por facultad o escuela" id="txtSearch" />
                                         <div className="input-group-append">
                                             <button className="btn btn-success" type="button" id="btnBuscar" title="Buscar"><i className="fa fa-search"></i></button>
                                         </div>
@@ -102,24 +82,26 @@ class Usuario extends React.Component {
                                         <thead className="table-header-background">
                                             <tr>
                                                 <th>N°</th>
-                                                <th>Apellidos y nombres</th>
-                                                <th>Correo</th>
+                                                <th>Facultad</th>
+                                                <th>Escuela</th>
+                                                <th>Formato</th>
                                                 <th>Opciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbList">
                                             <tr>
                                                 <td>1</td>
-                                                <td>Name</td>
-                                                <td>correo</td>
+                                                <td>Facultad 1</td>
+                                                <td>Escuela 1</td>
+                                                <td>Formato 1</td>
                                                 <td className="text-center">
-                                                    <button type="button" className="btn btn-primary" title="Departamento academico" onClick={this.openModalDepAcademico}><i className="fa fa-cubes"></i></button>
+                                                    <button type="button" className="btn btn-primary" title="Miembros" onClick={this.openModalMiembros}><i className="fa fa-users"></i></button>
                                                     &nbsp;
-                                                    <button type="button" className="btn btn-info" title="Perfiles" onClick={this.openModalPerfilUsuario}><i className="fa fa-edit"></i></button>
+                                                    <button type="button" className="btn btn-info" title="Resolucion" ><i className="fa fa-file"></i></button>
                                                     &nbsp;
                                                     <button type="button" className="btn btn-warning" title="Editar"><i className="fa fa-edit"></i></button>
-                                                    {/* &nbsp;
-                                                    <button type="button" className="btn btn-danger" title="Eliminar"><i className="fa fa-trash"></i></button> */}
+                                                    &nbsp;
+                                                    <button type="button" className="btn btn-danger" title="Eliminar"><i className="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -151,11 +133,9 @@ class Usuario extends React.Component {
 
                     </div>
                 </main>
-
             </>
-        );
+        )
     }
-
 }
 
-export default Usuario;
+export default ComiteAcreditacion;

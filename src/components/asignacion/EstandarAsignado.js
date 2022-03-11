@@ -1,57 +1,30 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
 import $ from '../../assets/js/jquery-3.3.1.min';
-import ModalUsuario from './ModalUsuario';
-import ModalDepAcademico from './ModalDepAcademico';
-import ModalPerfilUsuario from './ModalPerfilUsuario';
+import ModalEstandarAsignado from './ModalEstandarAsignado'
 
-class Usuario extends React.Component {
+class EstandarAsignado extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            datosUsuario: "Apellidos y Nombes"
+            nameStandar: 'Nombre del Estandar',
+            stateStandar: 'No logrado'
         }
     }
 
-    componentDidMount(){
-       
+    openModalEstandarAsignado = () => {
+        $("#modalEstandarAsignado").modal("show");
     }
 
-    openModalUsuario = () => {
-        $("#modalUsuario").modal("show");
-    }
-
-    openModalDepAcademico = () => {
-        $("#modalDepAcademico").modal("show");
-    }
-
-    openModalPerfilUsuario = () => {
-        $("#modalPerfilUsuario").modal("show");
-    }
-
-    onEventCloseModal = () => {
-        
-        $("#modalUsuario").on("hide.bs.modal", function() {
-            
-        });
-        
-    }
-
-  
     render() {
         return (
             <>
-
-                <ModalUsuario title={"Registrar Usuario"} />
-                <ModalDepAcademico title={"Departamento Academico  - "+this.state.datosUsuario } />
-                <ModalPerfilUsuario title={"Perfiles - "+this.state.datosUsuario }/>
-
+                <ModalEstandarAsignado title={"Estado: "+this.state.nameStandar} stateStandar={this.state.stateStandar}/>
                 <main className="app-content">
 
                     <div className="app-title">
-                        <h1><i className="fa fa-folder"></i> Usuarios <small>Lista</small></h1>
+                        <h1><i className="fa fa-folder"></i> Estandares Asignados <small>Lista</small></h1>
                     </div>
 
                     <div className="tile">
@@ -59,7 +32,7 @@ class Usuario extends React.Component {
                         <div className="row">
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div className="form-group">
-                                    <button className="btn btn-primary" id="btnAgregar" title="Agregar" onClick={this.openModalUsuario}>
+                                    <button className="btn btn-primary" id="btnAgregar" title="Agregar">
                                         <i className="fa fa-plus"></i> Agregar
                                     </button>
                                     <button className="btn btn-secondary ml-1" id="btnReload" title="Recargar">
@@ -95,6 +68,7 @@ class Usuario extends React.Component {
                             </div>
                         </div>
 
+
                         <div className="row">
                             <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                 <div className="table-responsive">
@@ -102,25 +76,28 @@ class Usuario extends React.Component {
                                         <thead className="table-header-background">
                                             <tr>
                                                 <th>N°</th>
-                                                <th>Apellidos y nombres</th>
-                                                <th>Correo</th>
-                                                <th>Opciones</th>
+                                                <th>Dimensión</th>
+                                                <th>Factor</th>
+                                                <th>Estandar</th>
+                                                <th>Etapa</th>
+                                                <th>Estado</th>
+                                                <th>Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tbList">
                                             <tr>
                                                 <td>1</td>
-                                                <td>Name</td>
-                                                <td>correo</td>
+                                                <td>Dimensión 1</td>
+                                                <td>Factor 1</td>
+                                                <td>Estandar 1</td>
+                                                <td>Etapa 1</td>
                                                 <td className="text-center">
-                                                    <button type="button" className="btn btn-primary" title="Departamento academico" onClick={this.openModalDepAcademico}><i className="fa fa-cubes"></i></button>
-                                                    &nbsp;
-                                                    <button type="button" className="btn btn-info" title="Perfiles" onClick={this.openModalPerfilUsuario}><i className="fa fa-edit"></i></button>
-                                                    &nbsp;
-                                                    <button type="button" className="btn btn-warning" title="Editar"><i className="fa fa-edit"></i></button>
-                                                    {/* &nbsp;
-                                                    <button type="button" className="btn btn-danger" title="Eliminar"><i className="fa fa-trash"></i></button> */}
+                                                    <span className="p-1 rounded bg-info text-white">Logrado</span>                                               
                                                 </td>
+                                                <td className="text-center">
+                                                    <button type="button" className="btn btn-primary" title="Ver detalle" onClick={this.openModalEstandarAsignado}><i className="fa fa-eye"></i></button>
+                                                    <button type="button" className="btn btn-danger ml-1" title="Imprimir"><i className="fa fa-print"></i></button>
+                                                </td> 
                                             </tr>
                                         </tbody>
                                     </table>
@@ -151,11 +128,11 @@ class Usuario extends React.Component {
 
                     </div>
                 </main>
-
             </>
-        );
+        )
     }
 
 }
 
-export default Usuario;
+export default EstandarAsignado;
+

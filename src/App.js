@@ -12,6 +12,12 @@ import Perfil from "./components/perfil/Perfil";
 import Plan from "./components/plan/Plan";
 import NotFound from "./components/error/NotFound";
 
+import ComiteAcreditacion from "./components/comite/ComiteAcreditacion";
+
+import AsignacionEstandar from "./components/asignacion/AsignacionEstandar";
+import EstadoEstandar from "./components/asignacion/EstadoEstandar";
+import EstandarAsignado from "./components/asignacion/EstandarAsignado";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -63,6 +69,31 @@ class App extends Component {
             exact={true}
             component={Home}
           />
+          <Route
+            path="/comite-acreditacion"
+            name="comite-acreditacion"
+            exact={true}
+            render={(props) => <ComiteAcreditacion {...props} />}
+          />
+          <Route
+            path="/asignacion-estandar"
+            name="asignacion-estandar"
+            exact={true}
+            render={(props) => <AsignacionEstandar {...props} />}
+          />
+          <Route
+            path="/estado-estandar"
+            name="estado-estandar"
+            exact={true}
+            render={(props) => <EstadoEstandar {...props} />}
+          />
+          <Route
+            path="/estandar-asignado"
+            name="estandar-asignado"
+            exact={true}
+            render={(props) => <EstandarAsignado {...props} />}
+          />
+
           <Route component={NotFound} />
         </Switch>
       </BrowserRouter>

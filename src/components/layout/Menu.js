@@ -39,6 +39,12 @@ class Menu extends React.Component {
                             </a>
                             <ul className="treeview-menu">
                                 <li>
+                                    <NavLink to="comite-acreditacion" exact activeClassName="active" className="app-menu__item" >
+                                        <i className="app-menu__icon fa fa-circle-o"></i>
+                                        <span className="app-menu__label">Comité de acreditación</span>
+                                    </NavLink>
+                                </li>
+                                <li>
                                     <NavLink to="plan" exact activeClassName="active" className="app-menu__item" >
                                         <i className="app-menu__icon fa fa-circle-o"></i>
                                         <span className="app-menu__label">Plan</span>
@@ -80,6 +86,26 @@ class Menu extends React.Component {
                                 </li>
                             </ul>
                         </li>
+
+                        <li>
+                            <NavLink to="asignacion-estandar" exact activeClassName="active" className="app-menu__item">
+                                <i className="app-menu__icon fa fa-server"></i>
+                                <span className="app-menu__label">ASIGNACION ESTANDAR</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="estado-estandar" exact activeClassName="active" className="app-menu__item">
+                                <i className="app-menu__icon fa fa-copy"></i>
+                                <span className="app-menu__label">ESTADO DE ESTANDARES</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="estandar-asignado" exact activeClassName="active" className="app-menu__item">
+                                <i className="app-menu__icon fa fa-file"></i>
+                                <span className="app-menu__label">ESTANDARES ASIGNADOS</span>
+                            </NavLink>
+                        </li>
+
                     </ul>
                 </aside>
             </>
