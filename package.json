@@ -11,10 +11,6 @@
   "scripts": {
     "build": "npm run build --workspace=app"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/luismy10/MonitoreoDocumentosReactJS.git"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC"
