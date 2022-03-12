@@ -1,8 +1,5 @@
 
-import jquery from './jquery-3.3.1.min.js';
-
 const main = () => {
-    console.log(jquery)
     // let $ = jquery;
     // "use strict";
     var treeviewMenu = $('.app-menu');
