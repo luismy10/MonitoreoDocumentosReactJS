@@ -4,14 +4,12 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "private": true,
-  "workspaces":[
+  "workspaces": [
     "app",
     "server"
   ],
   "scripts": {
-    "build": "npm run build --workspace=app",
-    "dev:app":"npm start --workspace=app",
-    "dev:server":"npm run dev --workspace=server"
+    "build": "npm run build --workspace=app"
   },
   "repository": {
     "type": "git",
