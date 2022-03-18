@@ -23,6 +23,8 @@ import EstandarAsignado from "./components/asignacion/EstandarAsignado";
 import Reporte from "./components/reporte/Reporte";
 import Login from "./components/Login"
 
+import Facultad  from "./components/facultad/Facultad";
+
 const Loader = () => {
   return (<div>Cargando....</div>);
 }
@@ -129,6 +131,13 @@ class App extends Component {
                       name="reporte"
                       exact={true}
                       render={(props) => <Reporte {...props} />}
+                    />
+
+                    <Route
+                      path="/facultad"
+                      name="facultad"
+                      exact={true}
+                      render={(props) => <Facultad {...props} />}
                     />
 
                     <Route component={NotFound} />

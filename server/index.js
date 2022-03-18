@@ -19,12 +19,14 @@ app.set('port', process.env.PORT || 5000);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/",function(req,res){
-    res.send("Mi nombre es ruber soy un perra.");
-});
+app.use(express.static(path.join(__dirname, "..", "app/build")));
 
-app.use(function (req, res, next) {
-    res.status(404).send("Error 404");
+//api rest
+app.use('/api/usuario', require('./router/Usuario'));
+app.use('/api/facultad', require('./router/Facultad'));
+
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, "..", "app/build", "index.html"));
 });
 
 app.listen(app.get("port"), () => {

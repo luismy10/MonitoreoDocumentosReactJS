@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { signIn } from '../redux/actions';
 // import $ from '../assets/js/jquery-3.3.1.min';
@@ -15,33 +16,65 @@ class Login extends React.Component {
             apellidos: '',
             nombres: '',
             correo: '',
-            usuario: '',
-            clave: ''
+            clave: '',
+            errormessage: ''
+
         }
 
-        this.refTxtUsuario = React.createRef()
+        this.refTxtEmail = React.createRef()
         this.refTxtClave = React.createRef()
     }
 
     onEventForm = async () => {
-        if (this.state.usuario == "") {
-            this.refTxtUsuario.current.focus();
+        if (this.state.correo == "") {
+            this.refTxtEmail.current.focus();
         } else if (this.state.clave == "") {
             this.refTxtClave.current.focus();
         } else {
             try {
 
-                let user = JSON.stringify({
-                    "id": Math.floor(Math.random() * 562000),
-                    "email": "alexander_dx_10@hotmail.com",
-                    "password": "123456"
+                // let user = JSON.stringify({
+                //     "mensaje":'Consulta exitosa',
+                //     "estado":1,
+                //     "usuario": {
+                //     "id": Math.floor(Math.random() * 562000),
+                //     "email": "alexander_dx_10@hotmail.com",
+                //     "password": "123456"
+                //     }
+
+                // });
+
+                // await localStorage.setItem('login', user);
+                // this.props.restore(user);
+                // this.props.history.push("principal");
+
+                const result = await axios.get('/api/usuario/login', {
+                    params: {
+                        "correo": this.state.correo.trim().toUpperCase(),
+                        "clave": this.state.clave.trim().toUpperCase(),
+                    }
                 });
 
-                await localStorage.setItem('login', user);
-                this.props.restore(user);
-                // this.props.history.push("principal");
+                
+                await localStorage.setItem('login', result.data);
+                this.props.restore(result.data);
+               
+                // console.log(result.data);
+
             } catch (error) {
-                console.log(error)
+                if (error.response != null || error.response != undefined) {
+                    this.setState({ errormessage: error.response.data}, () => {
+                        this.refTxtEmail.current.focus();
+                        this.refTxtEmail.current.value = "";
+                        this.refTxtClave.current.value = "";
+                        // console.log(error.response.data)
+
+                    })
+                    // console.log(error.response.data)
+                } else {
+                    this.setState({ errormessage: 'Error de cliente, ...' } )
+                    // console.log("Error de cliente, ...")
+                }
             }
         }
     }
@@ -70,16 +103,16 @@ class Login extends React.Component {
                                     </h4>
                                     <h4 className="login-head"><i className="fa fa-lg fa-fw fa-user"></i>Credenciales de Acceso</h4>
                                     <div className="form-group">
-                                        <label className="control-label">Usuario</label>
+                                        <label className="control-label">Correo</label>
                                         <input
                                             className="form-control"
-                                            type="text"
-                                            value={this.state.usuario}
-                                            placeholder="Dijite el usuario"
-                                            ref={this.refTxtUsuario}
+                                            type="email"
+                                            value={this.state.correo}
+                                            placeholder="Dijite el correo"
+                                            ref={this.refTxtEmail}
                                             maxLength={20}
                                             autoFocus
-                                            onChange={(event) => this.setState({ usuario: event.target.value })} />
+                                            onChange={(event) => this.setState({ correo: event.target.value })} />
                                     </div>
                                     <div className="form-group">
                                         <label className="control-label">Contraseña</label>
@@ -95,7 +128,9 @@ class Login extends React.Component {
                                         <button onClick={this.onEventForm} className="btn btn-primary btn-block"><i className="fa fa-sign-in fa-lg fa-fw"></i>ACEPTAR</button>
                                     </div>
                                     <div className="form-group text-center">
-                                        <label className="control-label text-danger" id="lblErrorMessage"></label>
+                                        <label className="control-label text-danger" id="lblErrorMessage">
+                                            {this.state.errormessage}
+                                        </label>
                                     </div>
 
                                 </div>

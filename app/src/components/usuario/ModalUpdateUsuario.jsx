@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { hideModal } from '../tools/Tools';
 
-class ModalUsuario extends Component {
+class ModalUpdateUsuario extends Component {
 
     constructor(props) {
         super(props);     
         this.state = {            
+            idUsuario: '',
             errormessage: "",
             atribTypeTxtClave: "password",
             txtApellidos: "",
@@ -19,10 +20,33 @@ class ModalUsuario extends Component {
         this.refTxtNombres = React.createRef()
         this.refTxtEmail = React.createRef()
         this.refTxtClave = React.createRef()
+        // console.log("modal update")
     }
 
+    async loadData (id)  {       
+        // console.log(id)     
+        try{
 
-    saveUser = async () => {
+            const result = await axios.get("/api/usuario/id",{
+                params: {
+                    idusuario:id
+                }
+            });
+
+            this.setState({
+                txtApellidos: result.data.apellidos,
+                txtNombres: result.data.nombres,
+                txtEmail: result.data.correo,
+                txtClave: result.data.clave,
+                idUsuario : id
+            });
+            // console.log(result)
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    async editUser  ()  {
         if (this.state.txtApellidos == "") {
             this.refTxtApellidos.current.focus();
         } else if (this.state.txtNombres == "") {
@@ -34,29 +58,22 @@ class ModalUsuario extends Component {
         } else {
             try {
 
-                let result = await axios.post('/api/usuario/add', {
+                let result = await axios.post('/api/usuario/update', {
                     "apellidos": this.state.txtApellidos.trim().toUpperCase(),
                     "nombres": this.state.txtNombres.trim().toUpperCase(),
                     "correo": this.state.txtEmail.trim().toUpperCase(),
-                    "clave": this.state.txtClave.trim().toUpperCase()
+                    "clave": this.state.txtClave.trim().toUpperCase(),
+                    "idusuario": this.state.idUsuario
                 });
 
                 // console.log(result);
 
-                hideModal('modalUsuario');
+                hideModal('modalUpdateUsuario');
 
             } catch (error) {
                 // console.log(error)
                 console.log(error.response)
             }
-        }
-    }
-
-    watchPassword = (event) => {
-        if (event.type === "mousedown") {
-            this.setState({ atribTypeTxtClave: "text" })
-        } else {
-            this.setState({ atribTypeTxtClave: "password" })
         }
     }
 
@@ -67,13 +84,21 @@ class ModalUsuario extends Component {
             txtNombres: "",
             txtEmail: "",
             txtClave: ""
-        })
+        });
+    }
+
+    watchPassword = (event) => {
+        if (event.type === "mousedown") {
+            this.setState({ atribTypeTxtClave: "text" })
+        } else {
+            this.setState({ atribTypeTxtClave: "password" })
+        }
     }
 
     render() {
         return (
             <div className="row">
-                <div className="modal fade" id="modalUsuario" data-backdrop="static">
+                <div className="modal fade" id="modalUpdateUsuario" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
 
@@ -162,7 +187,7 @@ class ModalUsuario extends Component {
                             <div className="modal-footer">
                                 <div className="row">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <button onClick={this.saveUser} className="btn btn-success" type="button" title="Guardar datos"><i className="fa fa-save"></i> Guardar</button>
+                                        <button onClick={()=>this.editUser()} className="btn btn-success" type="button" title="Guardar datos"><i className="fa fa-save"></i> Guardar</button>
                                         <button className="btn btn-danger ml-1" type="button" id="btnCancelCrudUser" data-bs-dismiss="modal" title="Cancelar"><i className="fa fa-close"></i> Cancelar</button>
                                     </div>
                                 </div>
@@ -177,4 +202,4 @@ class ModalUsuario extends Component {
 
 }
 
-export default ModalUsuario;
+export default ModalUpdateUsuario;
