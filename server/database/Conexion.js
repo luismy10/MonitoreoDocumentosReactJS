@@ -1,14 +1,15 @@
 const mysql = require('mysql');
+require('dotenv').config();
 
 class Conextion {
 
     constructor() {
         this.pool = mysql.createPool({
-            host: 'localhost',
-            user: 'root',
-            port: '3306',
-            password: '',
-            database: 'tramite-documento'
+            host: process.env.HOST,
+            user: process.env.USER,
+            port: process.env.PORT,
+            password: process.env.PASSWORD,
+            database: process.env.DATABASE
         });
     }
 
@@ -71,12 +72,12 @@ class Conextion {
         return new Promise((resolve, reject) => {
             connection.rollback((err) => {
                 if (err) {
-                    return reject(err.sqlMessage);                    
+                    return reject(err.sqlMessage);
                 }
 
                 connection.release();
                 return resolve();
-            });            
+            });
         });
     }
 

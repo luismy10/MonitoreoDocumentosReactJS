@@ -2,9 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
-const cors = require('cors')
-require('dotenv').config()
-
+const cors = require('cors');
 
 //cors para peticiones fuera del servidor
 /**
