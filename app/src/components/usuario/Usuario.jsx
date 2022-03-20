@@ -163,7 +163,7 @@ class Usuario extends React.Component {
 
     //aca crea tu llamada ala api altoque perra que
     //hijo de perra como vas a poner una funcion dentra de otra funcion esta
-    this.fillTableUsuario(1);
+    this.fillTableUsuario(0, 1, "");
   }
 
   //diferencia entre =()=> y ()
@@ -253,7 +253,7 @@ class Usuario extends React.Component {
       await this.setStateAsync({ isNextBtnActive: "", isPrevBtnActive: "" });
     }
 
-    this.fillTableUsuario(listid);
+    this.fillTableUsuario(0, listid, "");
   };
 
   setStateAsync(state) {
@@ -262,12 +262,14 @@ class Usuario extends React.Component {
     });
   }
 
-  async fillTableUsuario(paginacion) {
+  async fillTableUsuario(opcion, paginacion, buscar) {
     try {
       await this.setStateAsync({ loading: true, paginacion: paginacion });
 
       const result = await axios.get("/api/usuario/list", {
         params: {
+          opcion: opcion,
+          buscar: buscar,
           posicionPagina:
             (this.state.paginacion - 1) * this.state.filasPorPagina,
           filasPorPagina: this.state.filasPorPagina,
@@ -291,8 +293,13 @@ class Usuario extends React.Component {
     }
   }
 
+  onEventSearch(event) {
+    console.log(event.target.value);
+    this.fillTableUsuario(1, 1, event.target.value.trim());
+  }
+
   onEventReload() {
-    this.fillTableUsuario(1);
+    this.fillTableUsuario(0, 1, "");
   }
 
   render() {
@@ -346,7 +353,7 @@ class Usuario extends React.Component {
                       type="search"
                       className="form-control"
                       placeholder="Escribir para filtrar por apellidos o nombres"
-                      id="txtSearch"
+                      onKeyUp={(event) => this.onEventSearch(event)}
                     />
                     <div className="input-group-append">
                       <button
@@ -410,7 +417,7 @@ class Usuario extends React.Component {
                         this.state.lista.map((item, index) => {
                           return (
                             <tr key={index}>
-                              <td className="text-center">{index + 1}</td>
+                              <td className="text-center">{item.id}</td>
                               <td>{item.apellidos + ", " + item.nombres}</td>
                               <td>{item.correo}</td>
                               <td className="text-center">

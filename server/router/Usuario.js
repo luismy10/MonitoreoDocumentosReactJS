@@ -6,19 +6,19 @@ router.get('/login', async function (req, res) {
 
     const conec = new conexion();
     try {
-        
-        let result = await conec.query('select * from usuario where correo = ? and clave = ?',[
+
+        let result = await conec.query('select * from usuario where correo = ? and clave = ?', [
             req.query.correo,
             req.query.clave
         ]);
 
-        if(result.length > 0){
+        if (result.length > 0) {
             res.status(200).send(result[0]);
             // console.log('1')
-        }else{
-            res.status(400).send( "Datos no encontrados" );
+        } else {
+            res.status(400).send("Datos no encontrados");
             // console.log('2')
-        }        
+        }
     } catch (error) {
         console.log(error)
         res.status(500).send("Error interno de conexión, intente nuevamente.");
@@ -27,17 +27,45 @@ router.get('/login', async function (req, res) {
 
 
 router.get('/list', async function (req, res) {
-    const conec = new conexion();    
-    try{        
-        let lista = await conec.query('select idusuario, apellidos, nombres, correo, clave from usuario limit ?, ?', [
+    const conec = new conexion();
+    console.log(req.query)
+    try {
+        let lista = await conec.query(`select idusuario, apellidos, nombres, correo, clave from usuario 
+        where 
+        ? = 0
+        or
+        ? = 1 and apellidos like concat(?,'%') 
+        or 
+        ? = 1 and nombres like concat(?,'%') 
+        or
+        ? = 1 and correo like concat(?,'%') 
+        limit ?, ?`, [
+            parseInt(req.query.opcion),
+
+            parseInt(req.query.opcion),
+            req.query.buscar,
+
+            parseInt(req.query.opcion),
+            req.query.buscar,
+
+            parseInt(req.query.opcion),
+            req.query.buscar,
+
             parseInt(req.query.posicionPagina),
             parseInt(req.query.filasPorPagina)
         ]);
 
-        let total = await conec.query('SELECT COUNT(*) AS Total FROM usuario');        
-   
-        res.status(200).send({ "result": lista, "total": total[0].Total });
-    }catch (error) {
+        let resultLista = lista.map(function (item, index) {
+            return {
+                ...item,
+                id: (index + 1) + parseInt(req.query.posicionPagina),
+            };
+        });
+
+        let total = await conec.query('SELECT COUNT(*) AS Total FROM usuario');
+
+        res.status(200).send({ "result": resultLista, "total": total[0].Total });
+    } catch (error) {
         res.status(500).send(error);
     }
 })
@@ -47,7 +75,7 @@ router.post('/add', async function (req, res) {
 
     const conec = new conexion();
     let connection = null;
-    try{
+    try {
         connection = await conec.beginTransaction()
 
         await conec.execute(connection, 'insert into usuario(apellidos, nombres, correo, clave) values (?,?,?,?)', [
@@ -61,22 +89,22 @@ router.post('/add', async function (req, res) {
 
         res.status(200).send("datos insertados correctamente");
 
-    } catch(error){
+    } catch (error) {
         // console.log(error);
         if (connection != null) {
             conec.rollback(connection);
         }
         res.status(500).send(error);
     }
-    
+
 });
 
 
-router.post('/update', async function(req, res) {
+router.post('/update', async function (req, res) {
     const conec = new conexion();
     let connection = null;
 
-    try{
+    try {
 
         connection = await conec.beginTransaction();
         await conec.execute(connection, 'update usuario set apellidos=?, nombres=?, correo=?, clave=? where idusuario=?', [
@@ -91,7 +119,7 @@ router.post('/update', async function(req, res) {
 
         res.status(200).send('Datos actulizados correctamente')
 
-    }catch (error) {
+    } catch (error) {
         if (connection != null) {
             conec.rollback(connection);
         }
@@ -100,23 +128,23 @@ router.post('/update', async function(req, res) {
 })
 
 
-router.get('/id', async function(req, res) {
-    const conec = new conexion(); 
-    try{
-        let result = await conec.query('select * from usuario where idusuario = ?',[
+router.get('/id', async function (req, res) {
+    const conec = new conexion();
+    try {
+        let result = await conec.query('select * from usuario where idusuario = ?', [
             req.query.idusuario,
         ]);
 
-        if(result.length > 0){
+        if (result.length > 0) {
             res.status(200).send(result[0]);
-        }else{
-            res.status(400).send( "Datos no encontrados" );
-        } 
+        } else {
+            res.status(400).send("Datos no encontrados");
+        }
 
-    } catch(error){
+    } catch (error) {
         res.status(500).send("Error interno de conexión, intente nuevamente.");
     }
-    
+
 });
 
 
