@@ -58,12 +58,15 @@ router.post('/update', async function(req, res) {
         await conec.commit(connection)
 
         res.status(200).send('Datos actulizados correctamente')
+        // console.log(req.body)
 
     }catch (error) {
         if (connection != null) {
             conec.rollback(connection);
+            
         }
         res.status(500).send(error);
+        // console.log(error)
     }
 })
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { showModal, viewModal, clearModal } from '../tools/Tools'
 import axios from 'axios';
 import ModalFacultad from './ModalFacultad';
+import ModalEspecialidad from './ModalEspecialidad'
 
 
 class Facultad extends React.Component {
@@ -9,10 +10,13 @@ class Facultad extends React.Component {
         super(props);
         this.state = {
             idFacultad: '',
-            listaFacultad: []
+            idEspecialidad: '',
+            listaFacultad: [],
+            listaEspecialidad: []
         }
 
         this.refModalFacultad = React.createRef();
+        this.refModalEspecialidad = React.createRef();
     }
 
     
@@ -23,19 +27,38 @@ class Facultad extends React.Component {
             this.refModalFacultad.current.clearInput();
         });
 
+        clearModal('modalEspecialidad', () => {
+            this.setState({ idEspecialidad: ''})
+            this.refModalEspecialidad.current.clearInput()
+        })
+
         this.fillTableFacultad()
 
     }
 
-    openModalFacultad(event, id) {
+    openModalFacultad(id) {
+        // console.log(id)
         if(id == ''){
             showModal('modalFacultad')
+            // console.log('Agregar')
         } else{
-            // console.log('petardo')
+            // console.log('Editar')
             this.setState({ idFacultad: id }, () => {
                 showModal('modalFacultad')
+                this.refModalFacultad.current.loadData(id)
             })
         }
+    }
+
+    openModalEspecilidad(idE){
+        if(idE == ''){
+            showModal('modalEspecialidad')
+        } else{
+            this.setState({ idEspecialidad : idE }, ()=>{
+                showModal('modalEspecialidad')
+            })
+        }
+        
     }
 
     async fillTableFacultad(){
@@ -55,7 +78,8 @@ class Facultad extends React.Component {
     render() {
         return (
             <>
-                <ModalFacultad ref={this.refModalFacultad} title={ this.state.idFacultad == '' ? 'Registrar Facultad': 'Editar Facultad'} idFacultad={this.state.idFacultad} />
+                <ModalFacultad ref={this.refModalFacultad} title={ this.state.idFacultad == '' ? 'Registrar Facultad': 'Editar Facultad'} />
+                <ModalEspecialidad ref={this.refModalEspecialidad} title={ this.state.idEspecialidad == '' ? 'Registrar Especialidad':'Editar Especialidad'}/>
                 <main className="app-content">
 
                     <div className="app-title">
@@ -100,7 +124,7 @@ class Facultad extends React.Component {
                                                     <tr>
                                                         <td className="text-center" colSpan={3}>No hay datos para mostrar</td>
                                                     </tr>
-                                                ) : this.state.listaFacultad.map(function (item, index) {
+                                                ) : this.state.listaFacultad.map(  (item, index) => {
                                                     return (
                                                         <tr key={index}>
                                                                 <td className="text-center">{index + 1}</td>
@@ -109,7 +133,7 @@ class Facultad extends React.Component {
                                                                     <span className="bg-info px-2 py-1 rounded" title="Ver especialidades" onClick={()=>console.log('Ver especialidades')}>
                                                                         <i className="text-white fa fa-external-link-square"></i>
                                                                     </span>
-                                                                    <span className="ml-1 bg-warning px-2 py-1 rounded" title="Editar Facultad" onClick={ ()=>this.openModalFacultad(1) }>
+                                                                    <span className="ml-1 bg-warning px-2 py-1 rounded" title="Editar Facultad" onClick={ ()=>this.openModalFacultad(item.idfacultad) }>
                                                                         <i className="text-white fa fa-edit"></i>
                                                                     </span>
                                                                 </td>
@@ -130,7 +154,7 @@ class Facultad extends React.Component {
                                         <input type="search" className="form-control" id="txtBuscarEspecialidad" placeholder="Buscar..." />
                                     </div>
                                     <div className="input-group-append">
-                                        <button className="btn btn-success" id="btnAgregar" title="Agregar especialidad">
+                                        <button className="btn btn-success" id="btnAgregar" title="Agregar especialidad" onClick={ ()=> this.openModalEspecilidad(this.state.idEspecialidad)}>
                                             <i className="fa fa-plus"></i>
                                         </button>
                                     </div>

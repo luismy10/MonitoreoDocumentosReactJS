@@ -2,88 +2,28 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { hideModal } from '../tools/Tools'
 
-
-class ModalFacultad extends Component {
+class ModalEspecialidad extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            idFacultad: '',
+            idEspecialidad: '',
+            selectFacultad: 1,
             txtNombre: '',
             selectEstado: 1,
-            txtDescripcion: '',
+            txtDescripcion: ''
 
         }
 
+        this.refSelectFacultad = React.createRef()
         this.refTxtNombre = React.createRef()
         this.refSelectEstado = React.createRef()
         this.refTxtDescripcion = React.createRef()
-
-    }
-
-    async saveFacultad()  {
-        if (this.state.txtNombre == "") {
-            this.refTxtNombre.current.focus();
-        } else {
-            try {
-
-                let result = null
-
-                if(this.state.idFacultad != ''){
-                    result = await axios.post('/api/facultad/update', {
-                        "nombre": this.state.txtNombre.trim().toUpperCase(),
-                        "estado": this.state.selectEstado,
-                        "descripcion": this.state.txtDescripcion.trim().toUpperCase(),
-                        "idfacultad": this.state.idFacultad
-                    })
-
-                } else{
-                    result = await axios.post('/api/facultad/add', {
-                        "nombre": this.state.txtNombre.trim().toUpperCase(),
-                        "estado": this.state.selectEstado,
-                        "descripcion": this.state.txtDescripcion.trim().toUpperCase()   
-                    });
-                    
-                }
-
-                // console.log(result);
-
-                hideModal('modalFacultad');
-
-            } catch (error) {
-                console.log(error)
-                console.log(error.response)
-            }
-        }
-    }
-
-    async loadData (id)  {       
-  
-        try{
-
-            const result = await axios.get("/api/facultad/id",{
-                params: {
-                    idfacultad: id
-                }
-            });
-
-            // console.log(result)
-
-            this.setState({
-                txtNombre: result.data.nombre,
-                selectEstado: result.data.estado,
-                txtDescripcion: result.data.descripcion,
-                idFacultad: result.data.idfacultad
-            });
-            
-        }catch(error){
-            console.log(error)
-            console.log(error.response)
-        }
     }
 
     clearInput(){
         this.setState({
-            idFacultad: '',
+            idEspecialidad: '',
+            selectFacultad: 1,
             txtNombre: '',
             selectEstado: 1,
             txtDescripcion: ''
@@ -93,7 +33,7 @@ class ModalFacultad extends Component {
     render() {
         return (
             <div className="row">
-                <div className="modal fade" id="modalFacultad" data-backdrop="static">
+                <div className="modal fade" id="modalEspecialidad" data-backdrop="static">
                     <div className="modal-dialog modal-lg">
                         <div className="modal-content">
 
@@ -111,6 +51,21 @@ class ModalFacultad extends Component {
                                 <div className="row">
                                     <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                         <div className="form-group">
+                                            <label>Facultad</label>
+                                            <div className="input-group">
+                                                <select
+                                                    className="form-control"
+                                                    ref={this.refSelectFacultad}
+                                                    value={this.state.selectFacultad}
+                                                    onChange={(event) => this.setState({ selectFacultad: event.target.value })} >
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div className="form-group">
                                             <label>Nombre</label>
                                             <div className="input-group">
                                                 <input
@@ -120,35 +75,29 @@ class ModalFacultad extends Component {
                                                     value={this.state.txtNombre}
                                                     maxLength={80}
                                                     onChange={(event) => this.setState({ txtNombre: event.target.value })}
-                                                    placeholder="Dijite un nombre de facultad" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                                        <div className="form-group">
-                                            <label>Estado</label>
-                                            <div className="input-group">
-                                                <select 
-                                                    className="form-control"
-                                                    ref={this.refSelectEstado}
-                                                    value={this.state.selectEstado}
-                                                    onChange={(event) => this.setState({selectEstado: event.target.value})} >
-                                                    <option value="1">Activo</option>
-                                                    <option value="0">Inactivo</option>
-                                                </select>
-                                                
-                                                    {/* ref={this.refTxtNombres}
-                                                    value={this.state.txtNombres}
-                                                    maxLength={30}
-                                                    onChange={(event) => this.setState({ txtNombres: event.target.value })} */}
-                                                
+                                                    placeholder="Dijite un nombre de especialidad" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div className="row">
-                                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                        <div className="form-group">
+                                            <label>Estado</label>
+                                            <div className="input-group">
+                                                <select
+                                                    className="form-control"
+                                                    ref={this.refSelectEstado}
+                                                    value={this.state.selectEstado}
+                                                    onChange={(event) => this.setState({ selectEstado: event.target.value })} >
+                                                    <option value="1">Activo</option>
+                                                    <option value="0">Inactivo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                         <div className="form-group">
                                             <label>Descripción</label>
                                             <div className="input-group">
@@ -170,7 +119,7 @@ class ModalFacultad extends Component {
                             <div className="modal-footer">
                                 <div className="row">
                                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <button onClick={()=>this.saveFacultad()} className="btn btn-success" type="button" title="Guardar datos"><i className="fa fa-save"></i> Guardar</button>
+                                        <button onClick={() => this.saveFacultad()} className="btn btn-success" type="button" title="Guardar datos"><i className="fa fa-save"></i> Guardar</button>
                                         <button className="btn btn-danger ml-1" type="button" id="btnCancelCrudUser" data-bs-dismiss="modal" title="Cancelar"><i className="fa fa-close"></i> Cancelar</button>
                                     </div>
                                 </div>
@@ -184,4 +133,4 @@ class ModalFacultad extends Component {
     }
 }
 
-export default ModalFacultad
+export default ModalEspecialidad
