@@ -103,9 +103,7 @@ router.post('/add', async function (req, res) {
 router.post('/update', async function (req, res) {
     const conec = new conexion();
     let connection = null;
-
     try {
-
         connection = await conec.beginTransaction();
         await conec.execute(connection, 'update usuario set apellidos=?, nombres=?, correo=?, clave=? where idusuario=?', [
             req.body.apellidos,
@@ -115,10 +113,8 @@ router.post('/update', async function (req, res) {
             req.body.idusuario
         ])
 
-        await conec.commit(connection)
-
-        res.status(200).send('Datos actulizados correctamente')
-
+        await conec.commit(connection);
+        res.status(200).send('Datos actulizados correctamente');
     } catch (error) {
         if (connection != null) {
             conec.rollback(connection);
